@@ -64,6 +64,7 @@ static int debug=0;
 static int seconds=5;
 static int formato=0;
 static int mrtg=0;
+static int nagios=0;
 
 /* Even within the same VENDOR_ID / PRODUCT_ID, there are hardware variations
  * which we can detect by reading the USB product ID string. This determines
@@ -347,7 +348,7 @@ int main( int argc, char **argv) {
      struct tm *local;
      time_t t;
 
-     while ((c = getopt (argc, argv, "mfcvhl::")) != -1)
+     while ((c = getopt (argc, argv, "mnfcvhl::")) != -1)
      switch (c)
        {
        case 'v':
@@ -361,6 +362,9 @@ int main( int argc, char **argv) {
          break;
        case 'm':
          mrtg=1;
+         break;
+       case 'n':
+         nagios=1;
          break;
        case 'l':
          if (optarg!=NULL){
@@ -385,6 +389,7 @@ int main( int argc, char **argv) {
 	 printf("          -l[n] loop every 'n' seconds, default value is 5s\n");
 	 printf("          -c output only in Celsius\n");
 	 printf("          -f output only in Fahrenheit\n");
+	 printf("          -n output for nagios integration\n");
 	 printf("          -m output for mrtg integration\n");
   
 	 exit(EXIT_FAILURE);
@@ -444,7 +449,9 @@ int main( int argc, char **argv) {
                           local->tm_min);
 
               printf("pcsensor\n");
-           } else {
+           } else if (nagios) {
+              printf("Temperature %.2fF, %.2FC | temperature_f=%.2f; temperature_c=%.2f \n", (9.0 / 5.0 * tempc + 32.0), tempc, (9.0 / 5.0 * tempc + 32.0), tempc);
+		   } else {
               printf("%04d/%02d/%02d %02d:%02d:%02d ", 
                           local->tm_year +1900, 
                           local->tm_mon + 1, 
