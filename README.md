@@ -15,7 +15,7 @@ The original version of pcsensor0.0.1 was located on [this page](http://bailey.s
 
 ``` bash
 #[user]$
-apt-get install libusb-dev
+sudo apt-get install libusb-dev
 git clone git clone git@github.com:atw527/usb-thermometer.git
 cd usb-thermometer
 make
@@ -31,7 +31,7 @@ If attempting to run the script as-is, an error message will be returned:
 Could not set configuration 1
 ```
 
-This can be fixed by running as root (poor solution):
+This can be fixed by running as root (workaround):
 
 ``` bash
 #[user]$
